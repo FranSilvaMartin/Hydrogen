@@ -1,0 +1,66 @@
+name: Hydrogen
+version: '${project.version}'
+main: dev.fransilva.hydrogen.Hydrogen
+api-version: 1.19
+authors: [ Ghost ]
+description: Minecraft plugin with essential functions
+commands:
+  gamemode:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+    aliases: [gm]
+  heal:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  setspawn:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  spawn:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  rename:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  lore:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  repair:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  clearchat:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  setwarp:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  reloadconfig:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  warp:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+    aliases: [warps]
+  sethome:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  home:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+    aliases: [homes]
+  antonio123:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission

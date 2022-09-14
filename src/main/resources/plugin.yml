@@ -60,7 +60,19 @@ commands:
     usage: /<command>
     permission: yourplugin.yourcommandpermission
     aliases: [homes]
-  antonio123:
+  invsee:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  fly:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  aaa:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+  bbb:
     description: Your description
     usage: /<command>
     permission: yourplugin.yourcommandpermission

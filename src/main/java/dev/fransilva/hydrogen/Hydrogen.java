@@ -49,7 +49,7 @@ public final class Hydrogen extends JavaPlugin {
         getCommand("warp").setExecutor(new WarpCommand(this));
         getCommand("sethome").setExecutor(new SetHomeCommand(this));
         getCommand("home").setExecutor(new HomeCommand(this));
-        getCommand("antonio123").setExecutor(new HomeCommand(this));
+        getCommand("fly").setExecutor(new FlyCommand(this));
     }
 
     private void registerListeners() {

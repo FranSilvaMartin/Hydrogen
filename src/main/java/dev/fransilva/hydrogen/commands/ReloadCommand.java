@@ -23,9 +23,9 @@ public class ReloadCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
  
 		if (sender instanceof Player) {
-			player = (Player) sender;
-			player.sendMessage(TextUtils.colorize("&cSe ha recargado la configuración correctamente"));
-		}
+            player = (Player) sender;
+            player.sendMessage(TextUtils.colorize("&cSe ha recargado la configuración correctamente"));
+        }
 
         ConfigManager.getInstance().reloadConfigs();
         Bukkit.getConsoleSender().sendMessage(TextUtils.colorize("&cSe ha recargado la configuración correctamente"));

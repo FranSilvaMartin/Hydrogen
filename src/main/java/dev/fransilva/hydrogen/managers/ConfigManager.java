@@ -172,7 +172,7 @@ public class ConfigManager {
     public void setupConfig() {
         createNewCustomConfig("config.yml");
         createNewCustomConfig("warps.yml");
-        createNewCustomConfig("langs/es.yml");
+        createNewCustomConfig("langs/lang_es.yml");
         createNewCustomConfig("homes.yml");
     }
 }

@@ -69,7 +69,6 @@ public class ConfigManager {
         return null;
     }
 
-    //Returns true if saved successfully, returns false in case of error and prints error to console
     public boolean setData(FileConfiguration conf, String path, Object data) {
         conf.set(path, data);
         return saveData(conf);
@@ -102,7 +101,7 @@ public class ConfigManager {
 
         // Agrega un mensaje por defecto si no existe el path
         if (!conf.contains(path)) {
-            setData(conf, path, TextUtils.colorize("&7Default message, check langs folder"));
+            setData(conf, path, TextUtils.colorize("&cDefault message, check langs folder &7(" + selectedLanguage + ".yml" + ")"));
         }
         String message = TextUtils.colorize(conf.getString((path)));
 
@@ -145,7 +144,6 @@ public class ConfigManager {
     public double getDouble(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
-        //Create dummy if not available
         if (!conf.contains(path)) {
             setData(conf, path, 1.0);
         }
@@ -155,7 +153,6 @@ public class ConfigManager {
     public boolean getBoolean(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
-        //Create dummy if not available
         if (!conf.contains(path)) {
             setData(conf, path, false);
         }
@@ -165,7 +162,6 @@ public class ConfigManager {
     public List<?> getList(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
-        //Create dummy list if not available
         if (!conf.contains(path)) {
             setData(conf, path, new ArrayList<Location>().add(new Location(Bukkit.getWorld("world"), 10, 10, 10)));
         }

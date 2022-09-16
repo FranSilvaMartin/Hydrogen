@@ -12,7 +12,6 @@ import dev.fransilva.hydrogen.Hydrogen;
 
 public class ClearChatCommand implements CommandExecutor {
 
-    private Player player;
     private ConfigManager configManager;
 
     public ClearChatCommand() {
@@ -21,15 +20,11 @@ public class ClearChatCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CheckUtils.verifyIfIsAPlayer(sender)) {
-            player = (Player) sender;
-
-            if (CheckUtils.hasPermission(player, command.getName())) {
-                for (int x = 0; x < 950; x++) {
-                    Bukkit.broadcastMessage("");
-                }
-                Bukkit.broadcastMessage(configManager.getMessage("chat_cleaned", sender.getName()));
+        if (CheckUtils.hasPermission(sender, command.getName())) {
+            for (int x = 0; x < 950; x++) {
+                Bukkit.broadcastMessage("");
             }
+            Bukkit.broadcastMessage(configManager.getMessage("chat_cleaned", sender.getName()));
         }
         return true;
     }

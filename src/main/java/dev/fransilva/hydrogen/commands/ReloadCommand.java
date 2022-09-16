@@ -21,18 +21,10 @@ public class ReloadCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CheckUtils.verifyIfIsAPlayer(sender)) {
-            player = (Player) sender;
-
-            if (CheckUtils.hasPermission(player, command.getName())) {
-                configManager.reloadConfigs();
-                player.sendMessage(configManager.getMessage("reloaded_config"));
-            }
-            return true;
+        if (CheckUtils.hasPermission(sender, command.getName())) {
+            configManager.reloadConfigs();
+            sender.sendMessage(configManager.getMessage("reloaded_config"));
         }
-
-        configManager.reloadConfigs();
-        sender.sendMessage(configManager.getMessage("reloaded_config"));
         return true;
     }
 }

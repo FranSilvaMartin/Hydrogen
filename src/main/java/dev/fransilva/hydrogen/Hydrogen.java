@@ -36,6 +36,9 @@ public final class Hydrogen extends JavaPlugin {
     }
 
     private void registerCommands() {
+        getCommand("clearchat").setExecutor(new ClearChatCommand());
+        getCommand("reloadconfig").setExecutor(new ReloadCommand());
+        
         getCommand("gamemode").setExecutor(new GamemodeCommand(this));
         getCommand("heal").setExecutor(new HealCommand(this));
         getCommand("spawn").setExecutor(new SpawnCommand(this));
@@ -44,8 +47,6 @@ public final class Hydrogen extends JavaPlugin {
         getCommand("rename").setExecutor(new RenameCommand(this));
         getCommand("lore").setExecutor(new LoreCommand(this));
         getCommand("repair").setExecutor(new RepairCommand(this));
-        getCommand("clearchat").setExecutor(new ClearChatCommand(this));
-        getCommand("reloadconfig").setExecutor(new ReloadCommand(this));
         getCommand("warp").setExecutor(new WarpCommand(this));
         getCommand("sethome").setExecutor(new SetHomeCommand(this));
         getCommand("home").setExecutor(new HomeCommand(this));

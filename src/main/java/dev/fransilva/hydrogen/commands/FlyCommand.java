@@ -1,6 +1,7 @@
 package dev.fransilva.hydrogen.commands;
 
 import dev.fransilva.hydrogen.Hydrogen;
+import dev.fransilva.hydrogen.utils.CheckUtils;
 import dev.fransilva.hydrogen.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -18,10 +19,10 @@ public class FlyCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (TextUtils.verifyIfIsAPlayer(sender)) return true;
+        if (CheckUtils.verifyIfIsAPlayer(sender)) return true;
         final Player player = (Player) sender;
 
-        if (TextUtils.hasPermission(player, "command.fly") || sender.isOp()) {
+        if (CheckUtils.hasPermission(player, "command.fly") || sender.isOp()) {
             boolean status;
             switch (args.length) {
                 case 0:
@@ -34,7 +35,7 @@ public class FlyCommand implements CommandExecutor {
                     }
                     break;
                 case 1:
-                    if (TextUtils.hasPermission(player, "command.fly.others") || sender.isOp()) {
+                    if (CheckUtils.hasPermission(player, "command.fly.others") || sender.isOp()) {
                         String targetArg = args[0];
                         Player target = Bukkit.getPlayer(targetArg);
                         if (target != null) {

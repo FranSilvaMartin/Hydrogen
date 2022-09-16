@@ -1,0 +1,5 @@
+messages:
+  no_permission: "&cYou do not have permission to execute the command"
+  no_player: "&cNot player"
+  reloaded_config: "&cConfiguration reloaded successfully"
+  chat_cleaned: "&eChat has been cleared by: &f%player%"

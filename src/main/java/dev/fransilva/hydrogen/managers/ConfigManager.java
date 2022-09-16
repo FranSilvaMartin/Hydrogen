@@ -1,13 +1,17 @@
 package dev.fransilva.hydrogen.managers;
 
 import dev.fransilva.hydrogen.Hydrogen;
+import dev.fransilva.hydrogen.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,16 +20,17 @@ import java.util.List;
 public class ConfigManager {
 
     private static ConfigManager single_inst = null;
-
     private ArrayList<FileConfiguration> customConfigs = new ArrayList<FileConfiguration>();
     private ArrayList<String> configNames = new ArrayList<String>();
     private Hydrogen hydrogen;
+
+    private String selectedLanguage = "lang_es";
 
     public void setPlugin(Hydrogen hydrogen) {
         this.hydrogen = hydrogen;
     }
 
-    public FileConfiguration getConfig(String name){
+    public FileConfiguration getConfig(String name) {
         if (customConfigs.size() > 0) {
             for (FileConfiguration conf : customConfigs) {
                 if (conf.getName().equalsIgnoreCase(name)) {
@@ -37,7 +42,7 @@ public class ConfigManager {
         return createNewCustomConfig(name);
     }
 
-    public void reloadConfigs(){
+    public void reloadConfigs() {
         customConfigs.clear();
         configNames.clear();
 
@@ -65,22 +70,22 @@ public class ConfigManager {
     }
 
     //Returns true if saved successfully, returns false in case of error and prints error to console
-    public boolean setData(FileConfiguration conf, String path, Object data){
+    public boolean setData(FileConfiguration conf, String path, Object data) {
         conf.set(path, data);
         return saveData(conf);
     }
 
-    private boolean saveData(FileConfiguration conf){
+    private boolean saveData(FileConfiguration conf) {
         try {
             conf.save(new File(hydrogen.getDataFolder(), configNames.get(customConfigs.indexOf(conf))));
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
         return true;
     }
 
-    public String getString(String fileName, String path){
+    public String getString(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
         //Create dummy if not available
@@ -90,13 +95,44 @@ public class ConfigManager {
         return conf.getString(path);
     }
 
+    public String getMessage(String path, String player, String target) {
+        String fileName = "langs/" + selectedLanguage + ".yml";
+        FileConfiguration conf = getConfig("langs/" + selectedLanguage + ".yml");
+        path = "messages." + path;
+
+        // Agrega un mensaje por defecto si no existe el path
+        if (!conf.contains(path)) {
+            setData(conf, path, TextUtils.colorize("&7Default message, check langs folder"));
+        }
+        String message = TextUtils.colorize(conf.getString((path)));
+
+        if (player != null) {
+            message = message.replace("%player%", player);
+        }
+
+        if (target != null) {
+            message = message.replace("%target%", target);
+        }
+
+        return message;
+    }
+
+    public String getMessage(String path, String player) {
+        return getMessage(path, player, null);
+    }
+
+    public String getMessage(String path) {
+        return getMessage(path, null, null);
+    }
+
     /**
      * Obtiene el int de un parametro de la configuracion
+     *
      * @param fileName Nombre del archivo
-     * @param path Parametro
+     * @param path     Parametro
      * @return Devuelve un entero
      */
-    public int getInt(String fileName, String path){
+    public int getInt(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
         //Create dummy if not available
@@ -106,7 +142,7 @@ public class ConfigManager {
         return conf.getInt(path);
     }
 
-    public double getDouble(String fileName, String path){
+    public double getDouble(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
         //Create dummy if not available
@@ -116,7 +152,7 @@ public class ConfigManager {
         return conf.getDouble(path);
     }
 
-    public boolean getBoolean(String fileName, String path){
+    public boolean getBoolean(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
         //Create dummy if not available
@@ -126,7 +162,7 @@ public class ConfigManager {
         return conf.getBoolean(path);
     }
 
-    public List<?> getList(String fileName, String path){
+    public List<?> getList(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
         //Create dummy list if not available
@@ -136,7 +172,7 @@ public class ConfigManager {
         return conf.getList(path);
     }
 
-    public boolean addLocation(FileConfiguration conf, Location location, String path){
+    public boolean addLocation(FileConfiguration conf, Location location, String path) {
         conf.set(String.format("%s.world", path), location.getWorld().getName());
         conf.set(String.format("%s.x", path), location.getX());
         conf.set(String.format("%s.y", path), location.getY());
@@ -147,8 +183,7 @@ public class ConfigManager {
         return saveData(conf);
     }
 
-    public Location getLocation(String fileName, String path){
-
+    public Location getLocation(String fileName, String path) {
         FileConfiguration conf = getConfig(fileName);
 
         String worldName = getString(String.valueOf(conf), String.format("%s.world", path));
@@ -172,7 +207,10 @@ public class ConfigManager {
     public void setupConfig() {
         createNewCustomConfig("config.yml");
         createNewCustomConfig("warps.yml");
+        createNewCustomConfig("permissions.yml");
         createNewCustomConfig("langs/lang_es.yml");
+        createNewCustomConfig("langs/lang_en.yml");
         createNewCustomConfig("homes.yml");
+        selectedLanguage = getConfig("config.yml").getString("language");
     }
 }

@@ -1,3 +1,5 @@
 messages:
-  no_permission: "No tienes permiso para usar este comando"
-  no_player: "El comando debe ser ejecutado por un jugador"
+  no_permission: "&cNo tienes permiso para usar este comando"
+  no_player: "&cEl comando debe ser ejecutado por un jugador"
+  reloaded_config: "&cSe ha recargado la configuración correctamente"
+  chat_cleaned: "&eEl chat ha sido limpiado por &7%player%"

@@ -203,7 +203,7 @@ public class ConfigManager {
     public void setupConfig() {
         createNewCustomConfig("config.yml");
         createNewCustomConfig("warps.yml");
-        createNewCustomConfig("permissions.yml");
+        // createNewCustomConfig("permissions.yml");
         createNewCustomConfig("langs/lang_es.yml");
         createNewCustomConfig("langs/lang_en.yml");
         createNewCustomConfig("homes.yml");

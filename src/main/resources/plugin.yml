@@ -68,7 +68,7 @@ commands:
     description: Your description
     usage: /<command>
     permission: yourplugin.yourcommandpermission
-  aaa:
+  feed:
     description: Your description
     usage: /<command>
     permission: yourplugin.yourcommandpermission

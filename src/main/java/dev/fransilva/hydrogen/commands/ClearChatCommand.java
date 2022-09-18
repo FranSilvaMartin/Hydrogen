@@ -17,7 +17,6 @@ public class ClearChatCommand implements CommandExecutor {
     public ClearChatCommand() {
         this.configManager = ConfigManager.getInstance();
     }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CheckUtils.hasPermission(sender, command.getName())) {

@@ -13,43 +13,28 @@ import dev.fransilva.hydrogen.Hydrogen;
 
 public class SetSpawnCommand implements CommandExecutor {
 
-	private Player player;
-	private World world;
-	private Location location;
-	private ConfigManager configManager;
-	private Hydrogen hydrogen;
-	private float x, y, z, pitch, yaw;
-	
+    private Player player;
+    private Location location;
+    private ConfigManager configManager;
+    private Hydrogen hydrogen;
+
     public SetSpawnCommand(Hydrogen plugin) {
-		this.configManager = ConfigManager.getInstance();
+        this.configManager = ConfigManager.getInstance();
         this.hydrogen = plugin;
     }
-	
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		
-		if (sender instanceof Player) {
-			player = (Player) sender;
-			
-			world = player.getWorld();
-			location = player.getLocation();
-			x = location.getBlockX();
-			y = location.getBlockY();
-			z = location.getBlockZ();
-			pitch = location.getPitch();
-			yaw = location.getYaw();
 
-			player.sendMessage(ChatColor.YELLOW + "El spawn ha sido establecido correctamente. " + ChatColor.GRAY + "(" + x + ", " + y + ", " + z + ")");
-			configManager.setData(configManager.getConfig("config.yml"), "spawn.worldName", world.getName());
-			configManager.setData(configManager.getConfig("config.yml"), "spawn.x", x);
-			configManager.setData(configManager.getConfig("config.yml"), "spawn.y", y);
-			configManager.setData(configManager.getConfig("config.yml"), "spawn.z", z);
-			configManager.setData(configManager.getConfig("config.yml"), "spawn.pitch", pitch);
-			configManager.setData(configManager.getConfig("config.yml"), "spawn.yaw", yaw);
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-			return true;
-		}
-		
-		return false;
-	}
+        if (sender instanceof Player) {
+            player = (Player) sender;
+            location = player.getLocation();
+
+            player.sendMessage(ChatColor.YELLOW + "El spawn ha sido establecido correctamente. " + ChatColor.GRAY + "(x; " + location.getBlockX() + ", y; " + location.getBlockY() + ", z; " + location.getBlockZ() + ")");
+            configManager.addLocation(configManager.getConfig("config.yml"), location, "spawn");
+            return true;
+        }
+
+        return false;
+    }
 }

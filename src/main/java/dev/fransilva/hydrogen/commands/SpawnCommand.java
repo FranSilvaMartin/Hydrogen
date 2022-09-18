@@ -68,19 +68,7 @@ public class SpawnCommand implements CommandExecutor {
     }
 
     private boolean teletransporte(Player player) {
-        world = Bukkit.getWorld(configManager.getString("config.yml", "spawn.worldName"));
-        x = (float) configManager.getDouble("config.yml", "spawn.x");
-        y = (float) configManager.getDouble("config.yml", "spawn.y");
-        z = (float) configManager.getDouble("config.yml", "spawn.z");
-        yaw = (float) configManager.getDouble("config.yml", "spawn.yaw");
-        pitch = (float) configManager.getDouble("config.yml", "spawn.pitch");
-
-        if (world == null) {
-            player.sendMessage(ChatColor.RED + "No hay un spawn establecido");
-            return false;
-        }
-
-        location = new Location(world, x + 0.5, y, z + 0.5, yaw, pitch);
+        location = configManager.getLocation("config.yml", "spawn");
 
         if (location != null) {
             player.teleport(location);
@@ -90,7 +78,5 @@ public class SpawnCommand implements CommandExecutor {
             player.sendMessage(ChatColor.RED + "No hay un spawn establecido");
             return false;
         }
-
     }
-
 }

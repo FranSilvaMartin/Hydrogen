@@ -25,6 +25,8 @@ public class ConfigManager {
     private Hydrogen hydrogen;
 
     private String selectedLanguage = "lang_es";
+    private float x, y, z, pitch, yaw;
+    private World world;
 
     public void setPlugin(Hydrogen hydrogen) {
         this.hydrogen = hydrogen;
@@ -169,28 +171,29 @@ public class ConfigManager {
     }
 
     public boolean addLocation(FileConfiguration conf, Location location, String path) {
-        conf.set(String.format("%s.world", path), location.getWorld().getName());
-        conf.set(String.format("%s.x", path), location.getX());
-        conf.set(String.format("%s.y", path), location.getY());
-        conf.set(String.format("%s.z", path), location.getZ());
-        conf.set(String.format("%s.pitch", path), location.getPitch());
+        conf.set(String.format("%s.worldName", path), location.getWorld().getName());
+        conf.set(String.format("%s.x", path), location.getBlockX());
+        conf.set(String.format("%s.y", path), location.getBlockY());
+        conf.set(String.format("%s.z", path), location.getBlockZ());
         conf.set(String.format("%s.yaw", path), location.getYaw());
+        conf.set(String.format("%s.pitch", path), location.getPitch());
 
         return saveData(conf);
     }
 
     public Location getLocation(String fileName, String path) {
-        FileConfiguration conf = getConfig(fileName);
 
-        String worldName = getString(String.valueOf(conf), String.format("%s.world", path));
+        String worldName = getString(fileName, String.format("%s.worldName", path));
         Bukkit.getServer().createWorld(new WorldCreator(worldName));
 
-        World world = Bukkit.getWorld(worldName);
-        int x = getInt(String.valueOf(conf), String.format("%s.x", path));
-        int y = getInt(String.valueOf(conf), String.format("%s.y", path));
-        int z = getInt(String.valueOf(conf), String.format("%s.z", path));
+        world = Bukkit.getWorld(worldName);
+        x = (float) getDouble(fileName, String.format("%s.x", path));
+        y = (float) getDouble(fileName, String.format("%s.y", path));
+        z = (float) getDouble(fileName, String.format("%s.z", path));
+        yaw = (float) getDouble(fileName, String.format("%s.yaw", path));
+        pitch = (float) getDouble(fileName, String.format("%s.pitch", path));
 
-        return new Location(world, x, y, z);
+        return new Location(world, x + 0.5, y, z + 0.5, yaw, pitch);
     }
 
     public static ConfigManager getInstance() {
@@ -203,7 +206,7 @@ public class ConfigManager {
     public void setupConfig() {
         createNewCustomConfig("config.yml");
         createNewCustomConfig("warps.yml");
-        createNewCustomConfig("permissions.yml");
+        // createNewCustomConfig("permissions.yml");
         createNewCustomConfig("langs/lang_es.yml");
         createNewCustomConfig("langs/lang_en.yml");
         createNewCustomConfig("homes.yml");

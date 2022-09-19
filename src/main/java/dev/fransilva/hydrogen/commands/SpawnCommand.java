@@ -44,8 +44,7 @@ public class SpawnCommand implements CommandExecutor {
                 public void run() {
                     if (hydrogen.lista.contains(player.getUniqueId())) {
                         if (countdown >= 1) {
-                            player.sendMessage(
-                                    ChatColor.YELLOW + "Teletransportandote al spawn en " + ChatColor.GRAY + countdown);
+                            player.sendMessage(configManager.getMessage("teloported_spawn").replace("%countdown%", countdown + ""));
                             countdown--;
                         } else if (countdown < 1) {
                             Bukkit.getScheduler().cancelTask(save);
@@ -54,7 +53,7 @@ public class SpawnCommand implements CommandExecutor {
                             countdown = 5;
                         }
                     } else {
-                        player.sendMessage(ChatColor.RED + "Teletransporte cancelado, te has movido.");
+                        player.sendMessage(configManager.getMessage("teleported_canceled_spawn"));
                         Bukkit.getScheduler().cancelTask(save);
                         countdown = 5;
                     }
@@ -72,10 +71,10 @@ public class SpawnCommand implements CommandExecutor {
 
         if (location != null) {
             player.teleport(location);
-            player.sendMessage(ChatColor.YELLOW + "Has sido teletransportado correctamente.");
+            player.sendMessage(configManager.getMessage("teleport_spawn"));
             return true;
         } else {
-            player.sendMessage(ChatColor.RED + "No hay un spawn establecido");
+            player.sendMessage(configManager.getMessage("spawn_not_found"));
             return false;
         }
     }

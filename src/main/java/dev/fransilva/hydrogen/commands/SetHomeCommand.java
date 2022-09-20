@@ -8,10 +8,15 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import dev.fransilva.hydrogen.Hydrogen;
 import dev.fransilva.hydrogen.utils.TextUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 public class SetHomeCommand implements CommandExecutor {
 
@@ -49,13 +54,13 @@ public class SetHomeCommand implements CommandExecutor {
                 }
 
                 String name = args[0].toString();
+                String warpName = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
 
                 player.sendMessage(TextUtils
-                        .colorize("&eEl warp &7(" + name + ")&e ha sido creado &7(" + x + ", " + y + ", " + z + ")"));
+                        .colorize("&eEl warp &7(" + warpName + ")&e ha sido creado &7(" + x + ", " + y + ", " + z + ")"));
 
-                configManager.createNewCustomConfig("userdata/" + player.getUniqueId() + ".yml");
-
-                configManager.addLocation(configManager.getConfig("userdata/" + player.getUniqueId() + ".yml"), location, "homes." + name);
+                configManager.createNewCustomConfig("userdata/" + player.getUniqueId() + ".yml", false);
+                configManager.addLocation(configManager.getConfig("userdata/" + player.getUniqueId() + ".yml"), location, "homes." + warpName);
             }
             return true;
         }

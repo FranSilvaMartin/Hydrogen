@@ -1,5 +1,7 @@
 package dev.fransilva.hydrogen.commands;
 
+import dev.fransilva.hydrogen.managers.ConfigManager;
+import dev.fransilva.hydrogen.utils.CheckUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -13,57 +15,54 @@ import dev.fransilva.hydrogen.utils.TextUtils;
 
 public class SetHomeCommand implements CommandExecutor {
 
-	private Player player;
-	private World world;
-	private Location location;
-	private Hydrogen hydrogen;
-	private float x, y, z, pitch, yaw;
-	
-	public SetHomeCommand(Hydrogen plugin) {
-		this.hydrogen = plugin;
-	}
+    private Player player;
+    private World world;
+    private Location location;
+    private Hydrogen hydrogen;
+    private ConfigManager configManager;
+    private float x, y, z, pitch, yaw;
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public SetHomeCommand(Hydrogen plugin) {
+        this.hydrogen = plugin;
+        this.configManager = ConfigManager.getInstance();
+    }
 
-		if (sender instanceof Player) {
-			player = (Player) sender;
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-			world = player.getWorld();
-			location = player.getLocation();
-			x = location.getBlockX();
-			y = location.getBlockY();
-			z = location.getBlockZ();
-			pitch = location.getPitch();
-			yaw = location.getYaw();
+        if (CheckUtils.verifyIfIsAPlayer(sender, true)) {
 
-			if (args.length == 0) {
-				usageMessage(player);
-				return true;
-			}
+            if (CheckUtils.hasPermission(sender, command.getName())) {
+                player = (Player) sender;
 
-			String name = args[0].toString();
+                world = player.getWorld();
+                location = player.getLocation();
+                x = location.getBlockX();
+                y = location.getBlockY();
+                z = location.getBlockZ();
+                pitch = location.getPitch();
+                yaw = location.getYaw();
 
-			player.sendMessage(TextUtils
-					.colorize("&eEl warp &7(" + name + ")&e ha sido creado &7(" + x + ", " + y + ", " + z + ")"));
-			
-			/*getHomesConfig().set(player.getUniqueId() + "." + name + ".world-name", world.getName());
-			getHomesConfig().set(player.getUniqueId() + "." + name + ".x", x);
-			getHomesConfig().set(player.getUniqueId() + "." + name + ".y", y);
-			getHomesConfig().set(player.getUniqueId() + "." + name + ".z", z);
-			getHomesConfig().set(player.getUniqueId() + "." + name + ".pitch", pitch);
-			getHomesConfig().set(player.getUniqueId() + "." + name + ".yaw", yaw);
-			hydrogen.getCustomConfig().saveConfig();*/
-			return true;
-		}
-		return false;
-	}
+                if (args.length == 0) {
+                    usageMessage(player);
+                    return true;
+                }
 
-	private void usageMessage(Player player) {
-		player.sendMessage(ChatColor.RED + "Usage: /sethome <name>");
-	}
+                String name = args[0].toString();
 
-	/*private FileConfiguration getHomesConfig() {
-		return hydrogen.getCustomConfig().getHomesConfig();
-	}*/
+                player.sendMessage(TextUtils
+                        .colorize("&eEl warp &7(" + name + ")&e ha sido creado &7(" + x + ", " + y + ", " + z + ")"));
+
+                configManager.createNewCustomConfig("userdata/" + player.getUniqueId() + ".yml");
+
+                configManager.addLocation(configManager.getConfig("userdata/" + player.getUniqueId() + ".yml"), location, "homes." + name);
+            }
+            return true;
+        }
+        return true;
+    }
+
+    private void usageMessage(Player player) {
+        player.sendMessage(ChatColor.RED + "Usage: /sethome <name>");
+    }
 }

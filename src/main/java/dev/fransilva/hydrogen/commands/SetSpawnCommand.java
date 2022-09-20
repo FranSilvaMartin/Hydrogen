@@ -1,6 +1,7 @@
 package dev.fransilva.hydrogen.commands;
 
 import dev.fransilva.hydrogen.managers.ConfigManager;
+import dev.fransilva.hydrogen.utils.CheckUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -16,25 +17,35 @@ public class SetSpawnCommand implements CommandExecutor {
     private Player player;
     private Location location;
     private ConfigManager configManager;
-    private Hydrogen hydrogen;
+    private double x,y,z;
+    private String message;
 
-    public SetSpawnCommand(Hydrogen plugin) {
+    public SetSpawnCommand() {
         this.configManager = ConfigManager.getInstance();
-        this.hydrogen = plugin;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof Player) {
-            player = (Player) sender;
-            location = player.getLocation();
+        if (CheckUtils.verifyIfIsAPlayer(sender, true)) {
+            if (CheckUtils.hasPermission(sender, command.getName())) {
+                player = (Player) sender;
+                location = player.getLocation();
+                x = location.getBlockX();
+                y = location.getBlockY();
+                z = location.getBlockZ();
 
-            player.sendMessage(ChatColor.YELLOW + "El spawn ha sido establecido correctamente. " + ChatColor.GRAY + "(x; " + location.getBlockX() + ", y; " + location.getBlockY() + ", z; " + location.getBlockZ() + ")");
-            configManager.addLocation(configManager.getConfig("config.yml"), location, "spawn");
+                message = configManager.getMessage("setspawn");
+                message = message.replace("%blockX%", x + "");
+                message = message.replace("%blockY%", y + "");
+                message = message.replace("%blockZ%", z + "");
+
+                player.sendMessage(message);
+                configManager.addLocation(configManager.getConfig("config.yml"), location, "spawn");
+            }
             return true;
         }
 
-        return false;
+        return true;
     }
 }

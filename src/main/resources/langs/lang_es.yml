@@ -17,3 +17,4 @@ messages:
   teleported_canceled_spawn: "&cTeletransporte cancelado, te has movido."
   teleport_spawn: "&eHas sido teletransportado correctamente."
   spawn_not_found: "&cNo hay un spawn establecido."
+  setspawn: "&eEl spawn ha sido establecido correctamente. &7(x;%blockX%, y;%blockY%, z;%blockZ%)"

@@ -2,7 +2,6 @@ package dev.fransilva.hydrogen.commands;
 
 import dev.fransilva.hydrogen.managers.ConfigManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -49,7 +48,7 @@ public class SpawnCommand implements CommandExecutor {
                         } else if (countdown < 1) {
                             Bukkit.getScheduler().cancelTask(save);
                             hydrogen.lista.remove(player.getUniqueId());
-                            teletransporte(player);
+                            teleport(player);
                             countdown = 5;
                         }
                     } else {
@@ -58,24 +57,20 @@ public class SpawnCommand implements CommandExecutor {
                         countdown = 5;
                     }
                 }
-            }, 0, 1);
-
+            }, 0, 20);
             return true;
         }
-
         return false;
     }
 
-    private boolean teletransporte(Player player) {
+    private void teleport(Player player) {
         location = configManager.getLocation("config.yml", "spawn");
 
         if (location != null) {
             player.teleport(location);
             player.sendMessage(configManager.getMessage("teleport_spawn"));
-            return true;
         } else {
             player.sendMessage(configManager.getMessage("spawn_not_found"));
-            return false;
         }
     }
 }

@@ -42,7 +42,7 @@ public final class Hydrogen extends JavaPlugin {
         getCommand("feed").setExecutor(new FeedCommand());
 
         getCommand("spawn").setExecutor(new SpawnCommand(this));
-        getCommand("setspawn").setExecutor(new SetSpawnCommand(this));
+        getCommand("setspawn").setExecutor(new SetSpawnCommand());
 
         getCommand("gamemode").setExecutor(new GamemodeCommand(this));
         getCommand("setwarp").setExecutor(new SetWarpCommand(this));

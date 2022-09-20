@@ -41,6 +41,7 @@ public final class Hydrogen extends JavaPlugin {
         getCommand("heal").setExecutor(new HealCommand());
         getCommand("feed").setExecutor(new FeedCommand());
 
+        // Comandos en modo prueba (Permisos, Pruebas de jugador)
         getCommand("spawn").setExecutor(new SpawnCommand(this));
         getCommand("setspawn").setExecutor(new SetSpawnCommand());
 

@@ -51,7 +51,7 @@ public class ConfigManager {
         setupConfig();
     }
 
-    private FileConfiguration createNewCustomConfig(String name) {
+    public FileConfiguration createNewCustomConfig(String name) {
         FileConfiguration fileConfiguration;
         File configFile = new File(hydrogen.getDataFolder(), name);
         if (!configFile.exists()) {

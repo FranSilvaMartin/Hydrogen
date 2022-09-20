@@ -1,6 +1,8 @@
 package dev.fransilva.hydrogen.commands;
 
+import com.sun.tools.javac.comp.Check;
 import dev.fransilva.hydrogen.managers.ConfigManager;
+import dev.fransilva.hydrogen.utils.CheckUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -30,37 +32,39 @@ public class SpawnCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (sender instanceof Player) {
+        if (CheckUtils.verifyIfIsAPlayer(sender, true)) {
             player = (Player) sender;
 
-            if (hydrogen.lista.contains(player.getUniqueId())) {
-                return true;
-            }
+            if (CheckUtils.hasPermission(player, command.getName())) {
+                if (hydrogen.lista.contains(player.getUniqueId())) {
+                    return true;
+                }
 
-            hydrogen.lista.add(player.getUniqueId());
-            save = Bukkit.getScheduler().scheduleSyncRepeatingTask(hydrogen, new Runnable() {
-                @Override
-                public void run() {
-                    if (hydrogen.lista.contains(player.getUniqueId())) {
-                        if (countdown >= 1) {
-                            player.sendMessage(configManager.getMessage("teloported_spawn").replace("%countdown%", countdown + ""));
-                            countdown--;
-                        } else if (countdown < 1) {
+                hydrogen.lista.add(player.getUniqueId());
+                save = Bukkit.getScheduler().scheduleSyncRepeatingTask(hydrogen, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (hydrogen.lista.contains(player.getUniqueId())) {
+                            if (countdown >= 1) {
+                                player.sendMessage(configManager.getMessage("teloported_spawn").replace("%countdown%", countdown + ""));
+                                countdown--;
+                            } else if (countdown < 1) {
+                                Bukkit.getScheduler().cancelTask(save);
+                                hydrogen.lista.remove(player.getUniqueId());
+                                teleport(player);
+                                countdown = 5;
+                            }
+                        } else {
+                            player.sendMessage(configManager.getMessage("teleported_canceled_spawn"));
                             Bukkit.getScheduler().cancelTask(save);
-                            hydrogen.lista.remove(player.getUniqueId());
-                            teleport(player);
                             countdown = 5;
                         }
-                    } else {
-                        player.sendMessage(configManager.getMessage("teleported_canceled_spawn"));
-                        Bukkit.getScheduler().cancelTask(save);
-                        countdown = 5;
                     }
-                }
-            }, 0, 20);
-            return true;
+                }, 0, 10);
+                return true;
+            }
         }
-        return false;
+        return true;
     }
 
     private void teleport(Player player) {

@@ -55,9 +55,6 @@ public class PlayerJoin implements Listener {
 
             if (location != null) {
                 player.teleport(location);
-                player.sendMessage(configManager.getMessage("teleport_spawn"));
-            } else {
-                player.sendMessage(configManager.getMessage("spawn_not_found"));
             }
         }
     }

@@ -15,10 +15,12 @@ public final class Hydrogen extends JavaPlugin {
 
     public List<UUID> lista = new ArrayList<UUID>();
     private Hydrogen instance;
+    private String version;
 
     @Override
     public void onEnable() {
         instance = this;
+        version = this.getDescription().getVersion();
 
         ConfigManager.getInstance().setPlugin(this);
         ConfigManager.getInstance().setupConfig();
@@ -67,5 +69,9 @@ public final class Hydrogen extends JavaPlugin {
 
     public Hydrogen getInstance() {
         return instance;
+    }
+
+    public String getVersion() {
+        return version;
     }
 }

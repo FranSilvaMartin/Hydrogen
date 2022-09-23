@@ -243,10 +243,8 @@ public class ConfigManager {
     public void setupConfig() {
         createNewCustomConfig("config.yml", true);
         createNewCustomConfig("warps.yml", true);
-        // createNewCustomConfig("permissions.yml", true);
         createNewCustomConfig("langs/lang_es.yml", true);
         createNewCustomConfig("langs/lang_en.yml", true);
-        createNewCustomConfig("homes.yml", true);
         selectedLanguage = getConfig("config.yml").getString("language");
     }
 }

@@ -2,6 +2,7 @@ package dev.fransilva.hydrogen.commands;
 
 import dev.fransilva.hydrogen.Hydrogen;
 import dev.fransilva.hydrogen.managers.ConfigManager;
+import dev.fransilva.hydrogen.managers.CountdownManager;
 import dev.fransilva.hydrogen.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -75,28 +76,8 @@ public class HomeCommand implements CommandExecutor {
             }
 
             hydrogen.lista.add(player.getUniqueId());
-            save = Bukkit.getScheduler().scheduleSyncRepeatingTask(hydrogen.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    if (hydrogen.lista.contains(player.getUniqueId())) {
-                        if (countdown >= 1) {
-                            player.sendMessage(
-                                    ChatColor.YELLOW + "Teletransportandote al warp " + warpSelected2 + " en " + ChatColor.GRAY + countdown);
-                            countdown--;
-                        } else if (countdown < 1) {
-                            Bukkit.getScheduler().cancelTask(save);
-                            hydrogen.lista.remove(player.getUniqueId());
-                            teleport(player, warpSelected2);
-                            countdown = 5;
-                        }
-                    } else {
-                        player.sendMessage(ChatColor.RED + "Teletransporte cancelado, te has movido.");
-                        Bukkit.getScheduler().cancelTask(save);
-                        countdown = 5;
-                    }
-                }
-            }, 0, 10);
 
+            new CountdownManager(player, hydrogen, countdown, "teleporting_home", "teleport_cancelled");
             return true;
         }
 

@@ -1,9 +1,8 @@
 package dev.fransilva.hydrogen.commands;
 
-import com.sun.tools.javac.comp.Check;
 import dev.fransilva.hydrogen.managers.ConfigManager;
+import dev.fransilva.hydrogen.managers.CountdownManager;
 import dev.fransilva.hydrogen.utils.CheckUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -41,40 +40,11 @@ public class SpawnCommand implements CommandExecutor {
                 }
 
                 hydrogen.lista.add(player.getUniqueId());
-                save = Bukkit.getScheduler().scheduleSyncRepeatingTask(hydrogen, new Runnable() {
-                    @Override
-                    public void run() {
-                        if (hydrogen.lista.contains(player.getUniqueId())) {
-                            if (countdown >= 1) {
-                                player.sendMessage(configManager.getMessage("teloported_spawn").replace("%countdown%", countdown + ""));
-                                countdown--;
-                            } else if (countdown < 1) {
-                                Bukkit.getScheduler().cancelTask(save);
-                                hydrogen.lista.remove(player.getUniqueId());
-                                teleport(player);
-                                countdown = 5;
-                            }
-                        } else {
-                            player.sendMessage(configManager.getMessage("teleported_canceled_spawn"));
-                            Bukkit.getScheduler().cancelTask(save);
-                            countdown = 5;
-                        }
-                    }
-                }, 0, 10);
+
+                new CountdownManager(player, hydrogen, countdown, "teloported_spawn", "teleported_canceled_spawn");
                 return true;
             }
         }
         return true;
-    }
-
-    private void teleport(Player player) {
-        location = configManager.getLocation("config.yml", "spawn");
-
-        if (location != null) {
-            player.teleport(location);
-            player.sendMessage(configManager.getMessage("teleport_spawn"));
-        } else {
-            player.sendMessage(configManager.getMessage("spawn_not_found"));
-        }
     }
 }

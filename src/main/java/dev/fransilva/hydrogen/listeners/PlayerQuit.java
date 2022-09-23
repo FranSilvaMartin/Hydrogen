@@ -1,5 +1,8 @@
 package dev.fransilva.hydrogen.listeners;
 
+import dev.fransilva.hydrogen.managers.ConfigManager;
+import dev.fransilva.hydrogen.managers.PlayerDataManager;
+import dev.fransilva.hydrogen.utils.TextUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,17 +18,20 @@ public class PlayerQuit implements Listener {
 
 	@SuppressWarnings("unused")
 	private Hydrogen hydrogen;
-	
+	private PlayerDataManager playerDataManager;
+	private ConfigManager configManager;
     public PlayerQuit(Hydrogen plugin) {
         this.hydrogen = plugin;
+		this.configManager = ConfigManager.getInstance();
+		playerDataManager = new PlayerDataManager(configManager);
     }
 	
 	@EventHandler
     public void onJoin(PlayerQuitEvent event) {
 		
 		player = event.getPlayer();
-		message = ChatColor.GRAY + "Se ha unido el jugador " + ChatColor.WHITE + player.getName();
-		
+		message = TextUtils.colorize("&cEl jugador ha salido");
+		playerDataManager.setupPlayerData(player);
 		event.setQuitMessage(message);
     }
 }

@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConfigManager {
@@ -41,7 +42,7 @@ public class ConfigManager {
             }
         }
 
-        return createNewCustomConfig(name);
+        return createNewCustomConfig(name, true);
     }
 
     public void reloadConfigs() {
@@ -51,15 +52,51 @@ public class ConfigManager {
         setupConfig();
     }
 
-    private FileConfiguration createNewCustomConfig(String name) {
+    public FileConfiguration createNewCustomConfig(String name, boolean isResource) {
         FileConfiguration fileConfiguration;
         File configFile = new File(hydrogen.getDataFolder(), name);
-        if (!configFile.exists()) {
-            configFile.getParentFile().mkdirs();
-            hydrogen.saveResource(name, false);
+        fileConfiguration = new YamlConfiguration();
+
+        if (isResource) {
+            if (!configFile.exists()) {
+                configFile.getParentFile().mkdirs();
+                hydrogen.saveResource(name, false);
+            }
+        } else {
+            if (!configFile.exists()) {
+                try {
+                    configFile.getParentFile().mkdirs();
+                    fileConfiguration.save(configFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
+        try {
+            fileConfiguration.load(configFile);
+            customConfigs.add(fileConfiguration);
+            configNames.add(name);
+            return fileConfiguration;
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public FileConfiguration createNewCustomConfig2(String name) {
+        FileConfiguration fileConfiguration;
+        File configFile = new File(hydrogen.getDataFolder(), name);
         fileConfiguration = new YamlConfiguration();
+
+        if (!configFile.exists()) {
+            try {
+                fileConfiguration.save(configFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         try {
             fileConfiguration.load(configFile);
             customConfigs.add(fileConfiguration);
@@ -76,7 +113,7 @@ public class ConfigManager {
         return saveData(conf);
     }
 
-    private boolean saveData(FileConfiguration conf) {
+    public boolean saveData(FileConfiguration conf) {
         try {
             conf.save(new File(hydrogen.getDataFolder(), configNames.get(customConfigs.indexOf(conf))));
         } catch (IOException e) {
@@ -171,13 +208,13 @@ public class ConfigManager {
     }
 
     public boolean addLocation(FileConfiguration conf, Location location, String path) {
+        conf.set("##", "Format: x,y,z,pitch,yaw,world");
         conf.set(String.format("%s.worldName", path), location.getWorld().getName());
         conf.set(String.format("%s.x", path), location.getBlockX());
         conf.set(String.format("%s.y", path), location.getBlockY());
         conf.set(String.format("%s.z", path), location.getBlockZ());
         conf.set(String.format("%s.yaw", path), location.getYaw());
         conf.set(String.format("%s.pitch", path), location.getPitch());
-
         return saveData(conf);
     }
 
@@ -204,12 +241,10 @@ public class ConfigManager {
     }
 
     public void setupConfig() {
-        createNewCustomConfig("config.yml");
-        createNewCustomConfig("warps.yml");
-        // createNewCustomConfig("permissions.yml");
-        createNewCustomConfig("langs/lang_es.yml");
-        createNewCustomConfig("langs/lang_en.yml");
-        createNewCustomConfig("homes.yml");
+        createNewCustomConfig("config.yml", true);
+        createNewCustomConfig("warps.yml", true);
+        createNewCustomConfig("langs/lang_es.yml", true);
+        createNewCustomConfig("langs/lang_en.yml", true);
         selectedLanguage = getConfig("config.yml").getString("language");
     }
 }

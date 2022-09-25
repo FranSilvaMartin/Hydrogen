@@ -63,36 +63,25 @@ public class HomeCommand implements CommandExecutor {
 
                 return true;
             }
-            String warpSelected = args[0];
-            String warpSelected2 = warpSelected.substring(0,1).toUpperCase() + warpSelected.substring(1).toLowerCase();
+            String homeSelected = args[0];
+            homeSelected = homeSelected.substring(0,1).toUpperCase() + homeSelected.substring(1).toLowerCase();
 
-            if (!checkIfHomeExists(warpSelected2)) {
-                player.sendMessage(TextUtils.colorize("&cEl home &e" + warpSelected2 + " &cno existe!"));
+            if (!checkIfHomeExists(homeSelected)) {
+                player.sendMessage(TextUtils.colorize("&cEl home &e" + homeSelected + " &cno existe!"));
                 return true;
             }
 
             if (hydrogen.lista.contains(player.getUniqueId())) {
                 return true;
             }
-
             hydrogen.lista.add(player.getUniqueId());
 
-            new CountdownManager(player, hydrogen, countdown, "teleporting_home", "teleport_cancelled");
+            location = configManager.getLocation("userdata/" + player.getUniqueId() + ".yml", "homes." + homeSelected);
+            new CountdownManager(hydrogen, player, location, countdown, "home " + homeSelected);
             return true;
         }
 
         return false;
-    }
-
-    private void teleport(Player player, String warpSelected) {
-        location = configManager.getLocation("userdata/" + player.getUniqueId() + ".yml", "homes." + warpSelected);
-
-        if (location != null) {
-            player.teleport(location);
-            player.sendMessage(configManager.getMessage("teleport_spawn"));
-        } else {
-            player.sendMessage(configManager.getMessage("spawn_not_found"));
-        }
     }
 
     private boolean checkIfHomeExists(String warpSelected) {

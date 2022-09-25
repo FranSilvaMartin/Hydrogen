@@ -27,11 +27,17 @@ public class PlayerQuit implements Listener {
     }
 	
 	@EventHandler
-    public void onJoin(PlayerQuitEvent event) {
+    public void onQuit(PlayerQuitEvent event) {
 		
 		player = event.getPlayer();
 		message = TextUtils.colorize("&cEl jugador ha salido");
-		playerDataManager.setupPlayerData(player);
+
+		if (!configManager.checkConfigExits("userData/" + player.getUniqueId() + ".yml")) {
+			playerDataManager.setupNewPlayerData(player);
+		} else {
+			playerDataManager.setPlayerLastLocation(player);
+		}
+
 		event.setQuitMessage(message);
     }
 }

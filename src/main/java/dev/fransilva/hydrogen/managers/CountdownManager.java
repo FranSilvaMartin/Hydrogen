@@ -8,30 +8,30 @@ import org.bukkit.entity.Player;
 public class CountdownManager {
     private int save;
     private int countdown = 5;
-    private Hydrogen hydrogen;
     private Location location;
     private ConfigManager configManager;
 
     // Start the countdown
-    public CountdownManager(Player player, Hydrogen hydrogen, int cooldown, String message, String cancelMessage) {
+    public CountdownManager(Hydrogen hydrogen, Player player, Location location, int cooldown, String name) {
         this.configManager = ConfigManager.getInstance();
         this.countdown = cooldown;
+        this.location = location;
 
         save = Bukkit.getScheduler().scheduleSyncRepeatingTask(hydrogen, new Runnable() {
             @Override
             public void run() {
                 if (hydrogen.lista.contains(player.getUniqueId())) {
                     if (countdown >= 1) {
-                        player.sendMessage(configManager.getMessage(message).replace("%countdown%", countdown + ""));
+                        player.sendMessage(configManager.getMessage("teloported").replace("%countdown%", countdown + "").replace("%name%", name));
                         countdown--;
                     } else if (countdown < 1) {
                         cancel(save);
                         hydrogen.lista.remove(player.getUniqueId());
-                        teleport(player);
+                        teleport(player, location);
                         countdown = cooldown;
                     }
                 } else {
-                    player.sendMessage(configManager.getMessage(cancelMessage));
+                    player.sendMessage(configManager.getMessage("teleported_canceled"));
                     cancel(save);
                     countdown = cooldown;
                 }
@@ -39,70 +39,16 @@ public class CountdownManager {
         }, 0L, 20L);
     }
 
-    private void teleport(Player player) {
-        location = configManager.getLocation("config.yml", "spawn");
-
+    private void teleport(Player player, Location location) {
         if (location != null) {
             player.teleport(location);
-            player.sendMessage(configManager.getMessage("teleport_spawn"));
+            player.sendMessage(configManager.getMessage("teleport_successfully"));
         } else {
             player.sendMessage(configManager.getMessage("spawn_not_found"));
         }
     }
 
-    // Cancel the countdown
     public void cancel(int taskID) {
         Bukkit.getScheduler().cancelTask(save);
-    }
-
-    // Get the countdown
-    public int getCountdown() {
-        return countdown;
-    }
-
-    // Set the countdown
-    public void setCountdown(int countdown) {
-        this.countdown = countdown;
-    }
-
-    // Get the save
-    public int getSave() {
-        return save;
-    }
-
-    // Set the save
-
-    public void setSave(int save) {
-        this.save = save;
-    }
-
-    // Get the location
-    public Location getLocation() {
-        return location;
-    }
-
-    // Set the location
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    // Get the config manager
-    public ConfigManager getConfigManager() {
-        return configManager;
-    }
-
-    // Set the config manager
-    public void setConfigManager(ConfigManager configManager) {
-        this.configManager = configManager;
-    }
-
-    // Get the hydrogen
-    public Hydrogen getHydrogen() {
-        return hydrogen;
-    }
-
-    // Set the hydrogen
-    public void setHydrogen(Hydrogen hydrogen) {
-        this.hydrogen = hydrogen;
     }
 }

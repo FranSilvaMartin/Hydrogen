@@ -45,6 +45,14 @@ public class ConfigManager {
         return createNewCustomConfig(name, true);
     }
 
+    public boolean checkConfigExits(String name) {
+        File file = new File(hydrogen.getDataFolder(), name);
+        if (!file.exists()) {
+            return false;
+        }
+        return true;
+    }
+
     public void reloadConfigs() {
         customConfigs.clear();
         configNames.clear();

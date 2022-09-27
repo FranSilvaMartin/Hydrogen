@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import dev.fransilva.hydrogen.Hydrogen;
 import dev.fransilva.hydrogen.utils.TextUtils;
 import net.md_5.bungee.api.ChatColor;
 
@@ -18,13 +17,6 @@ public class RenameCommand implements CommandExecutor {
     private ItemStack item;
     private ItemMeta itemMeta;
     private String rename;
-
-    @SuppressWarnings("unused")
-    private Hydrogen hydrogen;
-
-    public RenameCommand(Hydrogen plugin) {
-        this.hydrogen = plugin;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {

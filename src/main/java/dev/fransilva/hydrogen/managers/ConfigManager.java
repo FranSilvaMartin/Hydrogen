@@ -216,7 +216,6 @@ public class ConfigManager {
     }
 
     public boolean addLocation(FileConfiguration conf, Location location, String path) {
-        conf.set("##", "Format: x,y,z,pitch,yaw,world");
         conf.set(String.format("%s.worldName", path), location.getWorld().getName());
         conf.set(String.format("%s.x", path), location.getBlockX());
         conf.set(String.format("%s.y", path), location.getBlockY());

@@ -13,7 +13,7 @@ messages:
   heal_target: "&eHas curado a &7%target% &ecorrectamente."
   feed: "&eTu apetito ha sido restablecido."
   feed_target: "&eHas restablecido el apetito a &7%target% &ecorrectamente."
-  teloported: "&eTeletransportandote al &7%name% &7en %countdown% segundos."
+  teloported: "&eTeletransportandote al &7%name% &een %countdown% segundos."
   teleported_canceled: "&cTeletransporte cancelado, te has movido."
   teleport_successfully: "&eHas sido teletransportado correctamente."
   spawn_not_found: "&cNo hay un spawn establecido."

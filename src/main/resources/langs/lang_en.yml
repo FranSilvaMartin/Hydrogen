@@ -3,3 +3,4 @@ messages:
   no_player: "&cNot player"
   reloaded_config: "&cConfiguration reloaded successfully"
   chat_cleaned: "&eChat has been cleared by: &f%player%"
+  warp_not_found: "&cNo existe un warp con el nombre %warpname%."

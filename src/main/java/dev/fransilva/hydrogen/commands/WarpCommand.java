@@ -40,43 +40,50 @@ public class WarpCommand implements CommandExecutor {
         if (CheckUtils.verifyIfIsAPlayer(sender, true)) {
             if (CheckUtils.hasPermission(sender, command.getName())) {
                 player = (Player) sender;
+                ArrayList<String> warpList = new ArrayList<String>();
 
                 if (hydrogen.lista.contains(player.getUniqueId())) {
                     return true;
                 }
 
                 if (args.length == 0) {
-                    ArrayList<String> list = new ArrayList<String>();
-
                     ConfigurationSection sec = configManager.getConfig("warps.yml").getConfigurationSection("warps");
 
                     if (sec != null) {
                         for (String warpName : sec.getKeys(false)) {
-                            list.add(warpName);
+                            warpList.add(warpName);
                         }
                     }
 
-                    if (list.isEmpty()) {
+                    if (warpList.isEmpty()) {
                         player.sendMessage(TextUtils.colorize("&cNo hay ningun warp asignado, usa /setwarp <name>"));
                     } else {
-                        String warpList = String.join(", ", list);
-                        player.sendMessage(TextUtils.colorize("&cWarp list: " + warpList));
+                        String warps = String.join(", ", warpList);
+                        player.sendMessage(TextUtils.colorize("&cWarp list: " + warps));
                     }
-
                     return true;
                 }
                 String warpSelected = args[0];
 
-                if (hydrogen.lista.contains(player.getUniqueId())) {
+                if (warpExists(warpSelected)) {
+                    if (hydrogen.lista.contains(player.getUniqueId())) {
+                        return true;
+                    }
+
+                    hydrogen.lista.add(player.getUniqueId());
+                    location = configManager.getLocation("warps.yml", "warps." + warpSelected);
+                    new CountdownManager(hydrogen, player, location, countdown, "warp " + warpSelected);
+                } else {
+                    player.sendMessage(configManager.getMessage("warp_not_found").replace("%warpname%", warpSelected));
                     return true;
                 }
-
-                hydrogen.lista.add(player.getUniqueId());
-                location = configManager.getLocation("warps.yml", "warps." + warpSelected);
-                new CountdownManager(hydrogen, player, location, countdown, "warp " + warpSelected);
                 return true;
             }
         }
         return true;
+    }
+
+    public boolean warpExists(String warpName) {
+        return configManager.getConfig("warps.yml").contains("warps." + warpName);
     }
 }

@@ -26,17 +26,19 @@ public class GamemodeCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (args.length > 1) {
-                    target = Bukkit.getPlayer(args[1]);
-                    if (target != null) {
-                        player.sendMessage("Has modificado el modo de juego de " + ChatColor.GRAY + target.getName());
-                        gamemodeChanger(target, args[0]);
+                if (CheckUtils.hasPermission(sender, command.getName() + ".target")) {
+                    if (args.length > 1) {
+                        target = Bukkit.getPlayer(args[1]);
+                        if (target != null) {
+                            player.sendMessage("Has modificado el modo de juego de " + ChatColor.GRAY + target.getName());
+                            gamemodeChanger(target, args[0]);
+                        } else {
+                            player.sendMessage(ChatColor.RED + "Jugador no encontrado");
+                            return true;
+                        }
                     } else {
-                        player.sendMessage(ChatColor.RED + "Jugador no encontrado");
-                        return true;
+                        gamemodeChanger(player, args[0]);
                     }
-                } else {
-                    gamemodeChanger(player, args[0]);
                 }
             }
         }

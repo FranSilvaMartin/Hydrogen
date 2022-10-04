@@ -18,3 +18,4 @@ messages:
   teleport_successfully: "&eHas sido teletransportado correctamente."
   spawn_not_found: "&cNo hay un spawn establecido."
   setspawn: "&eEl spawn ha sido establecido correctamente. &7(x;%blockX%, y;%blockY%, z;%blockZ%)"
+  warp_not_found: "&cNo existe un warp con el nombre %warpname%."

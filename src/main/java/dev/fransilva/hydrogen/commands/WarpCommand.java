@@ -3,6 +3,7 @@ package dev.fransilva.hydrogen.commands;
 import java.util.ArrayList;
 
 import dev.fransilva.hydrogen.managers.ConfigManager;
+import dev.fransilva.hydrogen.managers.CountdownManager;
 import dev.fransilva.hydrogen.utils.CheckUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -39,79 +40,50 @@ public class WarpCommand implements CommandExecutor {
         if (CheckUtils.verifyIfIsAPlayer(sender, true)) {
             if (CheckUtils.hasPermission(sender, command.getName())) {
                 player = (Player) sender;
+                ArrayList<String> warpList = new ArrayList<String>();
 
                 if (hydrogen.lista.contains(player.getUniqueId())) {
                     return true;
                 }
 
                 if (args.length == 0) {
-                    ArrayList<String> list = new ArrayList<String>();
-
                     ConfigurationSection sec = configManager.getConfig("warps.yml").getConfigurationSection("warps");
 
                     if (sec != null) {
                         for (String warpName : sec.getKeys(false)) {
-                            list.add(warpName);
+                            warpList.add(warpName);
                         }
                     }
 
-                    if (list.isEmpty()) {
+                    if (warpList.isEmpty()) {
                         player.sendMessage(TextUtils.colorize("&cNo hay ningun warp asignado, usa /setwarp <name>"));
                     } else {
-                        String warpList = String.join(", ", list);
-                        player.sendMessage(TextUtils.colorize("&cWarp list: " + warpList));
+                        String warps = String.join(", ", warpList);
+                        player.sendMessage(TextUtils.colorize("&cWarp list: " + warps));
                     }
-
                     return true;
                 }
                 String warpSelected = args[0];
 
-                if (hydrogen.lista.contains(player.getUniqueId())) {
+                if (warpExists(warpSelected)) {
+                    if (hydrogen.lista.contains(player.getUniqueId())) {
+                        return true;
+                    }
+
+                    hydrogen.lista.add(player.getUniqueId());
+                    location = configManager.getLocation("warps.yml", "warps." + warpSelected);
+                    new CountdownManager(hydrogen, player, location, countdown, "warp " + warpSelected);
+                } else {
+                    player.sendMessage(configManager.getMessage("warp_not_found").replace("%warpname%", warpSelected));
                     return true;
                 }
-
-                hydrogen.lista.add(player.getUniqueId());
-                save = Bukkit.getScheduler().scheduleSyncRepeatingTask(hydrogen.getInstance(), new Runnable() {
-                    @Override
-                    public void run() {
-                        if (hydrogen.lista.contains(player.getUniqueId())) {
-                            if (countdown >= 1) {
-                                player.sendMessage(
-                                        ChatColor.YELLOW + "Teletransportandote al warp " + warpSelected + " en " + ChatColor.GRAY + countdown);
-                                countdown--;
-                            } else if (countdown < 1) {
-                                Bukkit.getScheduler().cancelTask(save);
-                                hydrogen.lista.remove(player.getUniqueId());
-                                teleport(player, warpSelected);
-                                countdown = 5;
-                            }
-                        } else {
-                            player.sendMessage(ChatColor.RED + "Teletransporte cancelado, te has movido.");
-                            Bukkit.getScheduler().cancelTask(save);
-                            countdown = 5;
-                        }
-                    }
-                }, 0, 20);
+                return true;
             }
-            return true;
         }
-        return false;
+        return true;
     }
 
-    private void teleport(Player player, String warpSelected) {
-
-        location = configManager.getLocation("warps.yml", "warps." + warpSelected);
-
-        if (world == null) {
-            player.sendMessage(ChatColor.RED + "No hay un spawn establecido");
-            return;
-        }
-
-        if (location != null) {
-            player.teleport(location);
-            player.sendMessage(ChatColor.YELLOW + "Has sido teletransportado correctamente.");
-        } else {
-            player.sendMessage(ChatColor.RED + "No hay un spawn establecido");
-        }
+    public boolean warpExists(String warpName) {
+        return configManager.getConfig("warps.yml").contains("warps." + warpName);
     }
 }

@@ -40,8 +40,8 @@ public class SpawnCommand implements CommandExecutor {
                 }
 
                 hydrogen.lista.add(player.getUniqueId());
-
-                new CountdownManager(player, hydrogen, countdown, "teloported_spawn", "teleported_canceled_spawn");
+                location = configManager.getLocation("config.yml","spawn");
+                new CountdownManager(hydrogen, player, location, countdown, "spawn");
                 return true;
             }
         }

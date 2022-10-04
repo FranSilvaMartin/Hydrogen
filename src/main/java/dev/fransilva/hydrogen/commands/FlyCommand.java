@@ -1,9 +1,7 @@
 package dev.fransilva.hydrogen.commands;
 
-import dev.fransilva.hydrogen.Hydrogen;
 import dev.fransilva.hydrogen.managers.ConfigManager;
 import dev.fransilva.hydrogen.utils.CheckUtils;
-import dev.fransilva.hydrogen.utils.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,11 +10,9 @@ import org.bukkit.entity.Player;
 
 public class FlyCommand implements CommandExecutor {
 
-    private Hydrogen hydrogen;
     private ConfigManager configManager;
 
-    public FlyCommand(Hydrogen plugin) {
-        this.hydrogen = plugin;
+    public FlyCommand() {
         this.configManager = ConfigManager.getInstance();
     }
 

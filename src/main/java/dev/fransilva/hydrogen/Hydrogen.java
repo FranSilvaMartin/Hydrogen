@@ -46,16 +46,17 @@ public final class Hydrogen extends JavaPlugin {
         // Comandos en modo prueba (Permisos, Pruebas de jugador)
         getCommand("spawn").setExecutor(new SpawnCommand(this));
         getCommand("setspawn").setExecutor(new SetSpawnCommand());
+        getCommand("fly").setExecutor(new FlyCommand());
 
-        getCommand("gamemode").setExecutor(new GamemodeCommand(this));
-        getCommand("setwarp").setExecutor(new SetWarpCommand(this));
-        getCommand("rename").setExecutor(new RenameCommand(this));
-        getCommand("lore").setExecutor(new LoreCommand(this));
+        getCommand("gamemode").setExecutor(new GamemodeCommand());
+        getCommand("setwarp").setExecutor(new SetWarpCommand());
+        getCommand("rename").setExecutor(new RenameCommand());
+        getCommand("lore").setExecutor(new LoreCommand());
         getCommand("repair").setExecutor(new RepairCommand(this));
         getCommand("warp").setExecutor(new WarpCommand(this));
         getCommand("sethome").setExecutor(new SetHomeCommand(this));
         getCommand("home").setExecutor(new HomeCommand(this));
-        getCommand("fly").setExecutor(new FlyCommand(this));
+
     }
 
     private void registerListeners() {

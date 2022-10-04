@@ -45,6 +45,14 @@ public class ConfigManager {
         return createNewCustomConfig(name, true);
     }
 
+    public boolean checkConfigExits(String name) {
+        File file = new File(hydrogen.getDataFolder(), name);
+        if (!file.exists()) {
+            return false;
+        }
+        return true;
+    }
+
     public void reloadConfigs() {
         customConfigs.clear();
         configNames.clear();
@@ -208,7 +216,6 @@ public class ConfigManager {
     }
 
     public boolean addLocation(FileConfiguration conf, Location location, String path) {
-        conf.set("##", "Format: x,y,z,pitch,yaw,world");
         conf.set(String.format("%s.worldName", path), location.getWorld().getName());
         conf.set(String.format("%s.x", path), location.getBlockX());
         conf.set(String.format("%s.y", path), location.getBlockY());

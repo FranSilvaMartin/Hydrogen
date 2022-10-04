@@ -29,9 +29,9 @@ public class SignChange implements Listener {
 	@EventHandler
 	public void signEventDisposal(SignChangeEvent event) {
 		signLines = event.getLines();
-		
-		for (int i = 0; i < signLines.length; i++) {
-			if (signLines[i].startsWith("[") && signLines[i].endsWith("]") && signLines[i].toLowerCase().contains("disposal")) {
+
+		if (event.getPlayer().hasPermission("hydrogen.sign.disposal")) {
+			if (signLines[1].equalsIgnoreCase("[disposal]")) {
 				event.setLine(1, TextUtils.colorize("&0[&3Disposal&0]"));
 				event.setLine(2, TextUtils.colorize("Trash"));
 			}

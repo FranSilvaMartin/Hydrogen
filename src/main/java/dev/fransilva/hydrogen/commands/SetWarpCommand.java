@@ -18,12 +18,11 @@ public class SetWarpCommand implements CommandExecutor {
 	private Player player;
 	private World world;
 	private Location location;
-	private Hydrogen hydrogen;
+
 	private ConfigManager configManager;
 	private float x, y, z, pitch, yaw;
 	
-	public SetWarpCommand(Hydrogen plugin) {
-		this.hydrogen = plugin;
+	public SetWarpCommand() {
 		this.configManager = ConfigManager.getInstance();
 	}
 

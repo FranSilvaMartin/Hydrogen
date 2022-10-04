@@ -40,15 +40,9 @@ public class PlayerJoin implements Listener {
     }
 
     @EventHandler
-    public void playerData(PlayerJoinEvent event) {
-        player = event.getPlayer();
-        playerDataManager.setupPlayerData(player);
-        event.setJoinMessage(null);
-    }
-
-    @EventHandler
     public void firstJoinEvent(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        event.setJoinMessage(null);
 
         if (!player.hasPlayedBefore()) {
             Location location = configManager.getLocation("config.yml", "spawn");
@@ -57,5 +51,17 @@ public class PlayerJoin implements Listener {
                 player.teleport(location);
             }
         }
+
+        if (!configManager.checkConfigExits("userData/" + player.getUniqueId() + ".yml")) {
+            playerDataManager.setupNewPlayerData(player);
+        } else {
+            player.sendMessage(TextUtils.colorize("&eTus datos han sido cargados correctamente."));
+            playerDataManager.setPlayerLastLocation(player);
+            playerDataManager.setPlayerLastJoin(player);
+            playerDataManager.setPlayerName(player);
+            playerDataManager.setPlayerLastIp(player);
+        }
+
+
     }
 }

@@ -9,3 +9,6 @@ spawn:
   z: 85.0
   yaw: -91.07189
   pitch: -1.6496022
+
+# CHAT FORMAT SETTINGS
+chat-format: '&7[%rank% %player% %suffix% &7]&f%message%'

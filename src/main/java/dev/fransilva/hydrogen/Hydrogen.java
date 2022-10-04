@@ -4,7 +4,9 @@ import dev.fransilva.hydrogen.commands.*;
 import dev.fransilva.hydrogen.listeners.*;
 import dev.fransilva.hydrogen.managers.ConfigManager;
 import dev.fransilva.hydrogen.utils.TextUtils;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -27,6 +29,11 @@ public final class Hydrogen extends JavaPlugin {
 
         registerListeners();
         registerCommands();
+
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            LuckPerms luckPerms = provider.getProvider();
+        }
 
         Bukkit.getConsoleSender().sendMessage(TextUtils.colorize("&cHydrogen - Activado"));
     }

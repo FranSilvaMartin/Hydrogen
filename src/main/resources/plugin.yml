@@ -4,6 +4,8 @@ main: dev.fransilva.hydrogen.Hydrogen
 api-version: 1.19
 authors: [ Ghost ]
 description: Minecraft plugin with essential functions
+depend:
+  - LuckPerms
 commands:
   gamemode:
     description: Your description

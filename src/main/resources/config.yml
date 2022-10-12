@@ -11,4 +11,14 @@ spawn:
   pitch: -1.6496022
 
 # CHAT FORMAT SETTINGS
-chat-format: '&7[%rank% %player% %suffix% &7]&f%message%'
+chat:
+  # PLACEHOLDERS
+  # {message} - Message of the player
+  # {displayname} - Display name of the player
+  # {prefix} - Prefix of the sender
+  # {suffix} - Suffix of the sender
+  # {group} - Group name of the sender
+
+  format: '&7{prefix} {displayname}&r&7{suffix}: &7{message}'
+  # format: '&f{displayname}&7: &7{message}'
+  # format: '&7[{group}]&r {displayname}&7: &7{message}'

@@ -27,22 +27,26 @@ public class PlayerChat implements Listener {
 
     @EventHandler
     public void playerChat(PlayerChatEvent event) {
-        message = TextUtils.colorize(event.getMessage());
+        message = event.getMessage();
         player = event.getPlayer();
 
-        LuckPerms api = LuckPermsProvider.get();
+        if (player.hasPermission("hydrogen.chat.color"))
+            message = TextUtils.colorize(message);
 
+        LuckPerms api = LuckPermsProvider.get();
         String prefix = api.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getPrefix() != null ? api.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getPrefix() : "";
         String suffix = api.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getSuffix() != null ? api.getUserManager().getUser(player.getUniqueId()).getCachedData().getMetaData().getSuffix() : "";
         String group = api.getUserManager().getUser(player.getUniqueId()).getPrimaryGroup() != null ? api.getUserManager().getUser(player.getUniqueId()).getPrimaryGroup() : "";
+        String displayName = player.getDisplayName();
+        String configFormat = TextUtils.colorize(configManager.getConfig("config.yml").getString("chat.format"));
 
-        event.setFormat(TextUtils.colorize(configManager.getConfig("config.yml").getString("chat-format")
-                .replace("%rank%", prefix)
-                .replace("%suffix%", suffix)
-                .replace("%player%", player.getName())
-                .replace("%message%", message)));
+        String chatFormat = TextUtils.colorize(configFormat
+                .replace("{prefix}", prefix)
+                .replace("{suffix}", suffix)
+                .replace("{group}", group)
+                .replace("{displayname}", displayName));
+
+        chatFormat = chatFormat.replace("{message}", message);
+        event.setFormat(chatFormat);
     }
-
-    // Get chat format
-
 }

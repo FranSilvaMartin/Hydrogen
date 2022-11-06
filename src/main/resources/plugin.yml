@@ -74,7 +74,12 @@ commands:
     description: Your description
     usage: /<command>
     permission: yourplugin.yourcommandpermission
-  bbb:
+  test:
     description: Your description
     usage: /<command>
     permission: yourplugin.yourcommandpermission
+  kit:
+    description: Your description
+    usage: /<command>
+    permission: yourplugin.yourcommandpermission
+    aliases: [kits]
